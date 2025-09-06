@@ -1,0 +1,86 @@
+## Internet
+
+**1-¿Cómo funciona el internet?**
+Primeramente, ¿qué es el internet? Es una red masiva de computadoras interconectadas entre sí.
+
+**2-Internet y la web**
+El internet es una infraestructura física, mientras que la web es un servicio que se monta sobre dicha infraestructura. Por tanto, no son lo mismo.
+
+**3-Diferencia entre pagina web, sitio web, navegador y motor de busqueda**
+-Una *página web* es una simple página, un documento. Puede entenderse como una hoja de un libro.
+-Un *sitio web* es una coleccion de páginas web. Este viene a ser el libro completo.
+-Un *navegador* es una pieza de software.
+-Un *motor de búsqueda* es una página web, un servicio que se accede mediante el navegador.
+
+**4-¿Qué es HTTP, HTTPS, HTTP/3**
+-HTTP (HyperText Transfer Protocol) es un protocolo de la capa de aplicación (OSI), define las reglas de cómo se comunican los clientes(navegadores) y servidores.
+-HTTPS (HyperText Transfer Protocol Secure), básicamente es HTTP pero seguro. Ya que incluye cifrado de datos mediante TLS (Transport Layer Security)
+-HTTP/3 es una versión moderna de HTTP, se basa en QUIC (Quick UDP Internet Connections), un protocolo de transporte que funciona sobre UDP (Protocolo de Datagrama de Usuario), a diferencia de las versiones 
+anteriores que se basaban en TCP. 
+  Flujo de HTTP/3 
+  Paso 1: Resolución de DNS - Igual que siempre, el navegador encuentra la IP del servidor.
+  Paso 2: Conexión QUIC - Aquí es donde está la gran diferencia.
+  El navegador inicia una conexión QUIC con el servidor.
+  QUIC y TLS están integrados: La negociación de seguridad (el apretón de manos de TLS) se realiza al mismo tiempo que se establece la conexión QUIC inicial. Esto hace que la conexión sea mucho más rápida de establecer.
+  Paso 3: Transferencia de Datos - Una vez que la conexión QUIC está lista, el navegador y el servidor pueden intercambiar datos.
+  Transmisiones (Streams): El navegador puede solicitar múltiples recursos (archivos HTML, CSS, imágenes, etc.) en diferentes streams independientes.
+  Corrección de errores: Si un paquete se pierde en un stream, solo esa transmisión se ve afectada. Las otras siguen fluyendo sin interrupción, evitando el "Head-of-Line Blocking".
+
+
+**5-Flujo de la web**
+*La Resolución de Nombres (DNS)*
+1. El usuario ingresa la URL: Escribes, por ejemplo, google.com en tu navegador.
+2.Consulta al Resolver DNS: Tu navegador no sabe la dirección IP de google.com, así que le pregunta a un servidor especial llamado Resolver DNS.
+3.Proceso recursivo (si es necesario):
+-El Resolver DNS primero pregunta a un servidor raíz (Root DNS) por la dirección del servidor de dominios .com.
+-Luego, pregunta al servidor TLD (Top-Level Domain) por la dirección del servidor de google.com.
+-Finalmente, pregunta al servidor autoritativo (Authoritative DNS) de Google por la dirección IP final de google.com.
+4.Respuesta al navegador: El Resolver DNS le entrega la dirección IP al navegador.
+Dato clave: El Resolver DNS guarda esta respuesta en una caché por un tiempo determinado (TTL). Si otro usuario pregunta por google.com en ese lapso, el Resolver le entrega la IP directamente desde la caché, 
+sin tener que hacer todo el proceso de nuevo.
+
+*El Establecimiento de la Conexión*
+Una vez que el navegador tiene la IP, necesita conectar de forma segura con el servidor.
+1.Apretón de manos de TCP(Transmission Control Protocol): El navegador y el servidor realizan el three-way handshake (SYN, SYN-ACK, ACK) para establecer una conexión de red confiable. Es el "puente" del que hablábamos.
+2.Apretón de manos de TLS: Sobre la conexión TCP, se activa TLS (Transport Layer Security, el "S" de HTTPS).
+-El servidor le envía al navegador su certificado digital.
+-El navegador verifica la validez del certificado (si es legítimo y de confianza).
+-El navegador usa la clave pública del certificado para generar una clave simétrica única y la envía cifrada al servidor.
+-El servidor, con su clave privada, descifra el mensaje para obtener la clave simétrica.
+
+*La Transferencia de Datos*
+Ahora que el canal de comunicación es confiable y seguro, pueden empezar a intercambiar información.
+1.Intercambio de datos cifrados: A partir de este momento, tanto el cliente como el servidor usan la clave simétrica que acordaron para cifrar y descifrar todos los datos que se envían.
+2.Peticiones y respuestas HTTP: El navegador envía una petición HTTP (por ejemplo, GET /index.html) para solicitar la página web.
+3.El servidor responde: El servidor procesa la petición y envía una respuesta HTTP con el contenido solicitado (código HTML, CSS, JavaScript, imágenes, etc.).
+4.Cierre de la conexión: Una vez que el navegador ha recibido todos los datos, la conexión se cierra.
+
+**6-¿Qué es hosting?**
+El hosting o alojamiento web es un servicio que te permite publicar tu sitio web o aplicación en internet. Un servidor es una computadora de alta potencia que almacena todos los archivos de tu sitio web 
+(código, imágenes, videos, bases de datos) y está conectada a internet 24/7. Cuando alguien escribe el nombre de tu sitio en su navegador, el servidor "sirve" o entrega esos recursos para que la página se muestre.
+
+Tipos de Hosting
+-Hosting Compartido: Es el tipo de hosting más básico y económico. En este modelo, tu sitio web comparte el mismo servidor físico con docenas, o incluso cientos, de otros sitios.
+Es ideal para *blogs personales, pequeños negocios y sitios web con poco tráfico*, ya que los costos se distribuyen entre todos los usuarios. Sin embargo, el rendimiento de tu sitio puede verse afectado 
+si alguno de los otros sitios en el mismo servidor experimenta un pico de tráfico, ya que los recursos (CPU, RAM) son compartidos.
+-VPS (Servidor Virtual Privado): Un VPS es una partición virtual de un servidor físico. A diferencia del hosting compartido, en un VPS se te asigna una porción dedicada del servidor con recursos garantizados 
+(CPU, RAM, almacenamiento), aunque aún compartas el hardware con otros VPS. Es una excelente opción para sitios web de tamaño mediano o tiendas en línea que necesitan más rendimiento y personalización.
+-Servidor Dedicado: Con un servidor dedicado, obtienes un servidor físico completo para ti solo. No compartes el hardware con nadie más. Es la opción más potente y cara, y es ideal para sitios web de gran escala, 
+aplicaciones empresariales con mucho tráfico o proyectos que requieren un control total y máximo rendimiento.
+-PaaS (Platform as a Service): En un modelo PaaS, te enfocas únicamente en tu código. El proveedor (como Heroku o Render) se encarga de toda la infraestructura subyacente: los servidores, sistemas operativos, 
+redes y bases de datos. Simplemente subes tu código y la plataforma se encarga de todo lo demás, desde la configuración inicial hasta la gestión de actualizaciones y escalabilidad. Esto acelera enormemente 
+el desarrollo y despliegue, permitiéndote concentrarte en la lógica de tu aplicación.
+-Serverless (Funciones como Servicio): El hosting Serverless es un modelo donde no te preocupas por los servidores en absoluto. Tu código se ejecuta en "funciones" que son disparadas por eventos 
+(como una solicitud HTTP o una subida de archivo) y se ejecutan bajo demanda. No pagas por el servidor encendido, sino por la cantidad de tiempo que tu código se está ejecutando. Es extremadamente escalable y 
+rentable para tareas específicas, ya que no pagas por recursos ociosos. AWS Lambda y Cloud Functions de Google son ejemplos de este tipo de servicio.
+-Hosting Estático / JAMstack: El hosting estático es perfecto para sitios web que no cambian con frecuencia y están construidos con archivos HTML, CSS y JavaScript. En este modelo, los archivos estáticos se 
+almacenan y se sirven directamente a través de una CDN (Red de Distribución de Contenido), lo que resulta en una velocidad de carga increíblemente rápida. El enfoque JAMstack (JavaScript, APIs, Markup) 
+combina estos archivos estáticos con APIs externas para añadir funcionalidades dinámicas. Es ideal para blogs, portafolios y sitios de documentación.
+
+Consideraciones Clave al Elegir un Hosting
+Escalabilidad: ¿Qué tan fácil es que tu hosting crezca contigo? Si esperas un aumento de tráfico, busca una solución que te permita escalar recursos fácilmente (ej. VPS, PaaS).
+Rendimiento: La velocidad de carga de tu sitio es crucial. Busca un hosting con buena velocidad y tiempo de actividad (uptime) garantizado.
+Costos: Los precios varían enormemente. Define tu presupuesto y tus necesidades antes de decidir.
+Backups: Asegúrate de que el proveedor ofrezca copias de seguridad automáticas y un proceso de restauración sencillo. Perder tus datos es lo último que quieres que pase.
+Seguridad: Elige un proveedor con sólidas medidas de seguridad para proteger tu sitio de amenazas, como ataques DDoS o malware.
+Ubicación (Latencia): La ubicación física del servidor puede afectar la velocidad de carga de tu sitio para tus usuarios. Elige un servidor que esté geográficamente cerca de tu audiencia principal.
